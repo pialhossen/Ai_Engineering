@@ -7,8 +7,8 @@ dotenv.load_dotenv()
 
 class Chatbot:
     def __init__(self):
-        self.provider_client = OpenAI(
-            api_key=os.getenv('QROQ_API_KEY'),
+        self.llm = OpenAI(
+            api_key=os.getenv('GROQ_API_KEY'),
             base_url='https://api.groq.com/openai/v1'
         )
 
@@ -45,7 +45,7 @@ class Chatbot:
 
         early_messages, last_messages = (other_messages[0:5], other_messages[5:])
 
-        response = self.provider_client.chat.completions.create(
+        response = self.llm.chat.completions.create(
             model = 'openai/gpt-oss-20b', 
             messages = [
                 {
@@ -67,7 +67,7 @@ class Chatbot:
             'content': message
         })
 
-        response = self.provider_client.chat.completions.create(
+        response = self.llm.chat.completions.create(
             model = 'openai/gpt-oss-20b', 
             messages = self.messages,
             stream = True,
