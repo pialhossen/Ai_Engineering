@@ -31,7 +31,7 @@ class Analyzer:
 
 def main():
     analyzer = Analyzer()
-    ai_response = analyzer.sentiment_analysis('this movie is perfect')
+    ai_response = analyzer.sentiment_analysis('this movie is very bad')
     print(ai_response)
 
 if __name__ == '__main__':
