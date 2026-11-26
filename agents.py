@@ -1,7 +1,9 @@
 import dotenv
+import os
 from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain.agents import create_agent
+from langchain_tavily import TavilySearch
 
 dotenv.load_dotenv()
 
@@ -18,6 +20,8 @@ def get_weather(city: str) -> dict:
     print('---TOOL CALL---')
     return {'city': city, 'weather': 'sunny, 26'}
 
+search_tool = TavilySearch(max_results=1)
+
 class Agent:
     def __init__(self):
         self.llm = ChatGroq(
@@ -30,7 +34,7 @@ class Agent:
 
         self.agent = create_agent(
             model=self.llm,
-            tools=[get_weather]
+            tools=[get_weather, search_tool]
         )
 
     def chat_loop(self):
@@ -47,6 +51,7 @@ class Agent:
             print(f'Bot: {response['messages'][-1].content}')
 
 def main():
+    db_url = os.getenv('DATABASERY_URL')
     agent = Agent()
     agent.chat_loop()
 
